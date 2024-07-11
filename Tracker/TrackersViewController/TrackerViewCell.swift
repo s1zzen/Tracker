@@ -14,8 +14,6 @@ protocol TrackerViewCellDelegate: AnyObject {
 
 final class TrackerViewCell: UICollectionViewCell {
     
-    // MARK: - Private Properties
-    
     private let nameLable = UILabel()
     private let emogiImage = UILabel()
     private let daysCountLable = UILabel()
@@ -24,15 +22,11 @@ final class TrackerViewCell: UICollectionViewCell {
     private let currentDate = Date()
     private var currentTracker: Tracker?
     
-    // MARK: - Public Properties
-    
     var daysCount: Int = 0
     var trackerChangeToday = false
     var selectedDate = Date()
     var trackerViewController: TrackersViewController?
     weak var delegate: TrackerViewCellDelegate?
-    
-    // MARK: - Public Methods
     
     func setupViews(tracker: Tracker) {
         createBackground(color: tracker.color)
@@ -45,8 +39,6 @@ final class TrackerViewCell: UICollectionViewCell {
     func currentTracker(tracker: Tracker) {
         currentTracker = tracker
     }
-    
-    // MARK: - Private Methods
     
     private func createBackground(color: UIColor) {
         background.translatesAutoresizingMaskIntoConstraints = false
@@ -170,8 +162,6 @@ final class TrackerViewCell: UICollectionViewCell {
         guard let tracker = currentTracker else { return }
         delegate?.deleteCompletedTracker(tracker: tracker)
     }
-    
-    // MARK: - Private Actions
     
     @objc private func didTapCompleteButton() {
         guard currentDate > selectedDate else { return }
