@@ -15,7 +15,7 @@ protocol TrackerViewCellDelegate: AnyObject {
 final class TrackerViewCell: UICollectionViewCell {
     
     private let nameLable = UILabel()
-    private let emogiImage = UILabel()
+    private let emojiImage = UILabel()
     private let daysCountLable = UILabel()
     private let completeButton = UIButton()
     private var background = UIView()
@@ -31,7 +31,7 @@ final class TrackerViewCell: UICollectionViewCell {
     func setupViews(tracker: Tracker) {
         createBackground(color: tracker.color)
         addName(name: tracker.name)
-        addEmoji(emoji: tracker.emojy)
+        addEmoji(emoji: tracker.emoji)
         addCompleteButton(color: tracker.color)
         addDaysCountLable()
     }
@@ -68,19 +68,19 @@ final class TrackerViewCell: UICollectionViewCell {
     }
     
     private func addEmoji(emoji: String) {
-        emogiImage.translatesAutoresizingMaskIntoConstraints = false
-        emogiImage.text = emoji
-        emogiImage.font = UIFont.systemFont(ofSize: 16)
-        emogiImage.textAlignment = .center
-        emogiImage.backgroundColor = .white.withAlphaComponent(0.3)
-        emogiImage.layer.masksToBounds = true
-        emogiImage.layer.cornerRadius = 12
-        addSubview(emogiImage)
+        emojiImage.translatesAutoresizingMaskIntoConstraints = false
+        emojiImage.text = emoji
+        emojiImage.font = UIFont.systemFont(ofSize: 16)
+        emojiImage.textAlignment = .center
+        emojiImage.backgroundColor = .white.withAlphaComponent(0.3)
+        emojiImage.layer.masksToBounds = true
+        emojiImage.layer.cornerRadius = 12
+        addSubview(emojiImage)
         NSLayoutConstraint.activate([
-            emogiImage.leadingAnchor.constraint(equalTo: nameLable.leadingAnchor),
-            emogiImage.heightAnchor.constraint(equalToConstant: 24),
-            emogiImage.widthAnchor.constraint(equalToConstant: 24),
-            emogiImage.topAnchor.constraint(equalTo: background.topAnchor, constant: 12)
+            emojiImage.leadingAnchor.constraint(equalTo: nameLable.leadingAnchor),
+            emojiImage.heightAnchor.constraint(equalToConstant: 24),
+            emojiImage.widthAnchor.constraint(equalToConstant: 24),
+            emojiImage.topAnchor.constraint(equalTo: background.topAnchor, constant: 12)
         ])
     }
     
@@ -164,12 +164,17 @@ final class TrackerViewCell: UICollectionViewCell {
     }
     
     @objc private func didTapCompleteButton() {
-        guard currentDate > selectedDate else { return }
+        guard currentDate > selectedDate else {
+            print("менять на перед нельзя!")
+            return
+        }
         if trackerChangeToday == false {
             plusDaysCount()
             writeCompletedTracker()
             guard let tracker = currentTracker else { return }
-            delegate?.deleteTrackerFromCategories(tracker: tracker)
+            if tracker.timetable.contains(.none){
+                delegate?.deleteTrackerFromCategories(tracker: tracker)
+            }
         } else {
             minesDaysCount()
             deleteCompletedTracker()
