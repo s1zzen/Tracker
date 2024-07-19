@@ -5,7 +5,6 @@
 //  Created by Сергей Баскаков on 04.07.2024.
 //
 
-import Foundation
 import UIKit
 
 
@@ -49,6 +48,7 @@ final class TrackersViewController: UIViewController, TrackerViewCellDelegate, C
         datePicker.datePickerMode = .date
         datePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
+        currentDayOfWeek = calculateDayOfWeek(date: datePicker.date)
         
         let searchField = UISearchController(searchResultsController: nil)
         searchField.automaticallyShowsCancelButton = true
@@ -57,7 +57,7 @@ final class TrackersViewController: UIViewController, TrackerViewCellDelegate, C
     
     private func showPlugOrTrackers() {
         
-        print(categories)
+//        print(categories)
         
         if curentCategories.isEmpty {
             addPlugImage()
@@ -69,7 +69,9 @@ final class TrackersViewController: UIViewController, TrackerViewCellDelegate, C
     }
     
     func reloadCollectionAfterCreating() {
+        print(curentCategories)
         curentCategories = calculateArrayOfWeek(week: currentDayOfWeek, categories: categories)
+        print(curentCategories)
         trackersCollectionView.reloadData()
         showPlugOrTrackers()
     }

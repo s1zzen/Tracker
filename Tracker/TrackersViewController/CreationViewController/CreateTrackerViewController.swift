@@ -109,7 +109,7 @@ final class CreateTrackerViewController: UIViewController, TimetableViewControll
     
     private func addScrollView() {
         scrollView.frame = view.bounds
-        scrollView.contentSize = CGSize(width: view.frame.width, height: view.frame.height + 500)
+        scrollView.contentSize = CGSize(width: view.frame.width, height: view.frame.height)
         contentView.frame.size = scrollView.contentSize
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -163,7 +163,7 @@ final class CreateTrackerViewController: UIViewController, TimetableViewControll
             exitButton.heightAnchor.constraint(equalToConstant: 60),
             exitButton.widthAnchor.constraint(equalToConstant: 166),
             exitButton.trailingAnchor.constraint(equalTo: contentView.centerXAnchor, constant: -4),
-            exitButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -34)
+            exitButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
     
@@ -182,7 +182,7 @@ final class CreateTrackerViewController: UIViewController, TimetableViewControll
             saveButton.heightAnchor.constraint(equalToConstant: 60),
             saveButton.widthAnchor.constraint(equalToConstant: 166),
             saveButton.leadingAnchor.constraint(equalTo: contentView.centerXAnchor, constant: 4),
-            saveButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -34)
+            saveButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
     
@@ -196,7 +196,7 @@ final class CreateTrackerViewController: UIViewController, TimetableViewControll
             id: UUID(),
             name: nameTrackerTextField.text ?? "Без текста",
             color: .black,
-            emojy: "🙌",
+            emoji: "🙌",
             timetable: Array(self.timetable))
         let trackerCategory = TrackerCategory(
             heading: cattegory,
