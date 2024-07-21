@@ -2,10 +2,9 @@
 //  StatisticViewController.swift
 //  Tracker
 //
-//  Created by Сергей Баскаков on 04.07.2024.
+//  Created by Сергей Баскаков on 19.07.2024.
 //
 
-import Foundation
 import UIKit
 
 final class StatisticViewController: UIViewController {

@@ -16,14 +16,14 @@ struct Tracker {
     let timetable: [Timetable]
 }
 
-enum Timetable: Equatable {
-    case monday
-    case tuesday
-    case wednesday
-    case thursday
-    case friday
-    case saturday
-    case sunday
-    case none
+enum Timetable: String, Equatable, Codable {
+    case monday = "Понедельник"
+    case tuesday = "Вторник"
+    case wednesday = "Среда"
+    case thursday = "Четверг"
+    case friday = "Пятница "
+    case saturday = "Суббота"
+    case sunday = "Воскресение"
+    case none = "Без "
 }
 

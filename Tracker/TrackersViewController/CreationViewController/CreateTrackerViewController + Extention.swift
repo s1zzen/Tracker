@@ -11,12 +11,14 @@ extension CreateTrackerViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-            let vc = CategoriesItCreactingViewController()
+            let vc = CategoriesInCreactingViewController()
+            vc.createTrackerViewController = self
             let navController = UINavigationController(rootViewController: vc)
             self.present(navController, animated: true)
         } else {
             let vc = TimetableViewController()
             vc.delegate = self
+            vc.resultSetOfWeak = timetable
             let navController = UINavigationController(rootViewController: vc)
             self.present(navController, animated: true)
         }
@@ -65,13 +67,32 @@ extension CreateTrackerViewController: UITextFieldDelegate {
 }
 
 extension CreateTrackerViewController: UICollectionViewDelegate {
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? EmojiAndColorCell else { return }
+        if indexPath.section == 0 {
+            if selectedEmoji != nil {
+                selectedEmojiCell?.deselectEmojiCell()
+            }
+            cell.selectEmojiCell()
+            selectedEmoji = cell.emoji.text
+            selectedEmojiCell = cell
+            enabledSaveButtonOrNot()
+        } else {
+            if selectedColor != nil {
+                selectedColorCell?.deselectColorCell()
+            }
+            cell.selectColorCell()
+            selectedColor = cell.colorView.backgroundColor
+            selectedColorCell = cell
+            enabledSaveButtonOrNot()
+        }
+    }
 }
 
 extension CreateTrackerViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 4
+        return 2
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -79,12 +100,39 @@ extension CreateTrackerViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-        cell.contentView.backgroundColor = .red
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? EmojiAndColorCell else { return UICollectionViewCell()}
+        cell.setupCell()
+        if indexPath.section == 0 {
+            cell.setupEmoji(emoji[indexPath.row])
+        } else {
+            cell.setupColor(color: color[indexPath.row])
+        }
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let titile = indexPath.section == 0 ? "Emoji" : "Цвет"
+        guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as? HeaderOfEmojiOrColorView else { return UICollectionReusableView()}
+        view.titleLabel.text = titile
+        return view
     }
 }
 
 extension CreateTrackerViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        let indexPath = IndexPath(row: 0, section: section)
+        let headerView = self.collectionView(collectionView, viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader, at: indexPath)
+        return headerView.systemLayoutSizeFitting(CGSize(width: collectionView.frame.width,
+                                                         height: UIView.layoutFittingExpandedSize.height),
+                                                  withHorizontalFittingPriority: .required,
+                                                  verticalFittingPriority: .fittingSizeLevel)
+    }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.bounds.width / 6, height: 48)
+    }
 }

@@ -11,6 +11,8 @@ import UIKit
 final class TrackersViewController: UIViewController, TrackerViewCellDelegate, CreateTrackerViewControllerDelegate{
     private let plugImageView = UIImageView()
     private let plugLable = UILabel()
+    private let trackerCategoryStore = TrackerCategoryStore.shared
+    private let trackerStore = TrackerStore.shared
     private var trackersCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -28,6 +30,7 @@ final class TrackersViewController: UIViewController, TrackerViewCellDelegate, C
         view.backgroundColor = .white
         
         setupViews()
+        trackerStore.delegate = self
         
     }
     

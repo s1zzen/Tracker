@@ -14,15 +14,11 @@ final class HabitOrEventViewController: UIViewController {
     private let trackerButton = UIButton()
     var originalViewController: TrackersViewController?
     
-    // MARK: - Lifecycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavBar()
         setupViews()
     }
-    
-    // MARK: - Private Methods
     
     private func setupViews() {
         view.backgroundColor = .white
@@ -77,8 +73,6 @@ final class HabitOrEventViewController: UIViewController {
         navBar.modalPresentationStyle = .popover
         self.present(navBar, animated: true)
     }
-    
-    // MARK: - Private Actions
     
     @objc private func tapHubitButton() {
         goToNextVC(isTracker: false)

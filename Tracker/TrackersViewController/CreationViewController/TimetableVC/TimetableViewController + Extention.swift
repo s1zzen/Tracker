@@ -2,7 +2,7 @@
 //  TimetableViewController + Extention.swift
 //  Tracker
 //
-//  Created by Сергей Баскаков on 11.07.2024.
+//  Created by Сергей Баскаков on 19.07.2024.
 //
 
 import UIKit
@@ -14,14 +14,21 @@ extension TimetableViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        cell.textLabel?.text = daysOfWeek[indexPath.row]
+        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+        cell.textLabel?.text = daysOfWeek[indexPath.row].rawValue
         cell.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
         let switchView = UISwitch()
         switchView.addTarget(self, action: #selector(switchValueChanged), for: .valueChanged)
         switchView.tag = indexPath.row
         switchView.onTintColor = UIColor(red: 55/255, green: 114/255, blue: 231/255, alpha: 1)
+        for day in resultSetOfWeak {
+            if day == daysOfWeek[indexPath.row] {
+                switchView.isOn = true
+            }
+        }
         cell.accessoryView = switchView
+        cell.selectionStyle = .none
+        cell.accessoryType = .disclosureIndicator
         return cell
     }
     
@@ -33,4 +40,3 @@ extension TimetableViewController: UITableViewDataSource {
 extension TimetableViewController: UITableViewDelegate {
     
 }
-
