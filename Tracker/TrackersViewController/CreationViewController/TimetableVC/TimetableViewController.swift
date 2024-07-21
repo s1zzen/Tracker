@@ -2,7 +2,7 @@
 //  TimetableViewController.swift
 //  Tracker
 //
-//  Created by Сергей Баскаков on 11.07.2024.
+//  Created by Сергей Баскаков on 19.07.2024.
 //
 
 import UIKit
@@ -15,10 +15,10 @@ final class TimetableViewController: UIViewController {
     
     private let timetableTableView = UITableView()
     private let completeButton = UIButton()
-    private var resultSetOfWeak = Set<Timetable>()
     
     weak var delegate: TimetableViewControllerDelegate?
-    var daysOfWeek = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
+    var daysOfWeek: [Timetable] = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
+    var resultSetOfWeak = Set<Timetable>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,13 +38,15 @@ final class TimetableViewController: UIViewController {
         timetableTableView.delegate = self
         timetableTableView.layer.masksToBounds = true
         timetableTableView.layer.cornerRadius = 16
+        timetableTableView.isScrollEnabled = false
+        timetableTableView.tableHeaderView = UIView()
         view.addSubview(timetableTableView)
         timetableTableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             timetableTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             timetableTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             timetableTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            timetableTableView.heightAnchor.constraint(equalToConstant: 525)
+            timetableTableView.heightAnchor.constraint(equalToConstant: 525 - 1)
         ])
     }
     
@@ -98,4 +100,3 @@ final class TimetableViewController: UIViewController {
         self.dismiss(animated: true)
     }
 }
-
