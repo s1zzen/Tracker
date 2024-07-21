@@ -12,7 +12,7 @@ extension CategoriesInCreactingViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         createTrackerViewController?.cattegory = categories[indexPath.row].heading ?? ""
         createTrackerViewController?.categoryCoreData = categories[indexPath.row]
-        createTrackerViewController?.buttonsOfCategoryOrTimetableTableView.reloadData()
+        createTrackerViewController?.buttonsOfCattegoryOrTimetableTableView.reloadData()
         createTrackerViewController?.enabledSaveButtonOrNot()
         self.dismiss(animated: true)
     }

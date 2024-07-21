@@ -8,7 +8,7 @@
 import UIKit
 
 
-final class TrackersViewController: UIViewController, TrackerViewCellDelegate, CreateTrackerViewControllerDelegate{
+final class TrackersViewController: UIViewController, TrackerViewCellDelegate {
     private let plugImageView = UIImageView()
     private let plugLable = UILabel()
     private let trackerCategoryStore = TrackerCategoryStore.shared
@@ -28,6 +28,10 @@ final class TrackersViewController: UIViewController, TrackerViewCellDelegate, C
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        
+        currentDayOfWeek = calculateDayOfWeek(date: Date())
+        categories = returnCategories()
+        curentCategories = calculateArrayOfWeek(week: currentDayOfWeek, categories: categories)
         
         setupViews()
         trackerStore.delegate = self
@@ -72,9 +76,8 @@ final class TrackersViewController: UIViewController, TrackerViewCellDelegate, C
     }
     
     func reloadCollectionAfterCreating() {
-        print(curentCategories)
+        categories = returnCategories()
         curentCategories = calculateArrayOfWeek(week: currentDayOfWeek, categories: categories)
-        print(curentCategories)
         trackersCollectionView.reloadData()
         showPlugOrTrackers()
     }
@@ -162,6 +165,38 @@ final class TrackersViewController: UIViewController, TrackerViewCellDelegate, C
         }
         
         return weekdays[weekdayIndex]
+    }
+    
+    func returnCategories() -> [TrackerCategory] {
+        let trackersCategoryCoreData = trackerCategoryStore.trackersCategoryCoreData
+        let trackersCoreData = trackerStore.trackersCoreData
+        var result: [TrackerCategory] = []
+        for trackerCategoryCoreData in trackersCategoryCoreData {
+            var trackers: [Tracker] = []
+            if let heading = trackerCategoryCoreData.heading {
+                for trackerCoreData in trackersCoreData {
+                        if trackerCoreData.category == trackerCategoryCoreData {
+                            if
+                                let id = trackerCoreData.id,
+                                let name = trackerCoreData.name,
+                                let color = trackerCoreData.color,
+                                let emogi = trackerCoreData.emoji,
+                                let timetable = trackerCoreData.timetable {
+                            trackers.append(Tracker(
+                                id: id,
+                                name: name,
+                                color: color as! UIColor,
+                                emoji: emogi,
+                                timetable: timetable as! [Timetable]))
+                        }
+                    }
+                }
+                result.append(TrackerCategory(
+                    heading: heading,
+                    trackers: trackers))
+            }
+        }
+        return result
     }
     
     func calculateArrayOfWeek(week: Timetable, categories: [TrackerCategory]) -> [TrackerCategory] {
